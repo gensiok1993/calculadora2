@@ -72,7 +72,7 @@
         }
         #resultado {
             margin-top: 25px;
-            font-size: 1.4em;
+            font-size: 1.2em;
             font-weight: bold;
             padding: 15px;
             border-radius: 8px;
@@ -96,7 +96,7 @@
     <h1>Calculadora de Rentabilidad</h1>
     <form id="calculadoraForm">
         <div class="form-group">
-            <label for="oroPorHora">Oro por hora farmeando:</label>
+            <label for="oroPorHora">Oro que consigues por hora (minando):</label>
             <input type="number" id="oroPorHora" step="0.01" required>
         </div>
         <div class="form-group">
@@ -129,16 +129,32 @@
             return;
         }
 
-        // Calculamos el umbral dinámicamente
-        // 1 hora = 3600 segundos. Tiempo de fabricación del lingote = 2 segundos.
-        const umbral = (oroPorHora / 3600) * 2;
-        const gananciaNeta = precioLingote - (precioMena * 2);
+        const tiempoFabricacion = 2; // En segundos
+        const segundosPorHora = 3600;
 
-        if (gananciaNeta > umbral) {
-            resultadoDiv.textContent = `✅ (Profit por barra: ${gananciaNeta.toFixed(2)})`;
+        // Calculamos la ganancia por la fabricación de un solo lingote
+        const gananciaNetaLingote = precioLingote - (precioMena * 2);
+
+        // Calculamos el umbral dinámico (ganancia de minar en el mismo tiempo)
+        const gananciaMinando = (oroPorHora / segundosPorHora) * tiempoFabricacion;
+
+        // Calculamos la ganancia por hora fabricando
+        const lingotesPorHora = segundosPorHora / tiempoFabricacion;
+        const gananciaHoraFabricando = gananciaNetaLingote * lingotesPorHora;
+
+        if (gananciaNetaLingote > gananciaMinando) {
+            resultadoDiv.innerHTML = `
+                <p><strong>¡Aprobado! ✅</strong></p>
+                <p>Ganancia por lingote: ${gananciaNetaLingote.toFixed(2)} G</p>
+                <p>Ganancia por hora (fabricando): ${gananciaHoraFabricando.toFixed(2)} G</p>
+            `;
             resultadoDiv.className = 'aprobado';
         } else {
-            resultadoDiv.textContent = `❌ (Profit por barra: ${gananciaNeta.toFixed(2)})`;
+            resultadoDiv.innerHTML = `
+                <p><strong>No Aprobado ❌</strong></p>
+                <p>Ganancia por lingote: ${gananciaNetaLingote.toFixed(2)} G</p>
+                <p>Ganancia por hora (fabricando): ${gananciaHoraFabricando.toFixed(2)} G</p>
+            `;
             resultadoDiv.className = 'no-aprobado';
         }
     });
