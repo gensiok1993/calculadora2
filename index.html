@@ -135,10 +135,10 @@
         const gananciaNeta = precioLingote - (precioMena * 2);
 
         if (gananciaNeta > umbral) {
-            resultadoDiv.textContent = `Aprobado ✅ (Profit por barra: ${gananciaNeta.toFixed(2)})`;
+            resultadoDiv.textContent = `✅ (Profit por barra: ${gananciaNeta.toFixed(2)})`;
             resultadoDiv.className = 'aprobado';
         } else {
-            resultadoDiv.textContent = `No Aprobado ❌ (Profit por barra: ${gananciaNeta.toFixed(2)})`;
+            resultadoDiv.textContent = `❌ (Profit por barra: ${gananciaNeta.toFixed(2)})`;
             resultadoDiv.className = 'no-aprobado';
         }
     });
