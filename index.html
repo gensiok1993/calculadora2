@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Rentabilidad Dinámica</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #e0eafc;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px 50px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            max-width: 450px;
+            width: 100%;
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+            font-weight: 600;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+            font-size: 1em;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1em;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        input[type="number"]:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+            outline: none;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+        #resultado {
+            margin-top: 25px;
+            font-size: 1.4em;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 8px;
+            transition: all 0.5s ease;
+        }
+        .aprobado {
+            background-color: #e6f7e9;
+            color: #27ae60;
+            border: 1px solid #27ae60;
+        }
+        .no-aprobado {
+            background-color: #fcebeb;
+            color: #c0392b;
+            border: 1px solid #c0392b;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Calculadora de Rentabilidad</h1>
+    <form id="calculadoraForm">
+        <div class="form-group">
+            <label for="oroPorHora">Oro que consigues por hora:</label>
+            <input type="number" id="oroPorHora" step="0.01" required>
+        </div>
+        <div class="form-group">
+            <label for="precioLingote">Precio del Lingote:</label>
+            <input type="number" id="precioLingote" step="0.01" required>
+        </div>
+        <div class="form-group">
+            <label for="precioMena">Precio de la Mena:</label>
+            <input type="number" id="precioMena" step="0.01" required>
+        </div>
+        <button type="submit">Calcular</button>
+    </form>
+    <div id="resultado"></div>
+</div>
+
+<script>
+    const form = document.getElementById('calculadoraForm');
+    const resultadoDiv = document.getElementById('resultado');
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const oroPorHora = parseFloat(document.getElementById('oroPorHora').value);
+        const precioLingote = parseFloat(document.getElementById('precioLingote').value);
+        const precioMena = parseFloat(document.getElementById('precioMena').value);
+
+        if (isNaN(oroPorHora) || isNaN(precioLingote) || isNaN(precioMena) || oroPorHora < 0 || precioLingote < 0 || precioMena < 0) {
+            resultadoDiv.textContent = 'Por favor, introduce valores numéricos positivos en todos los campos.';
+            resultadoDiv.className = 'no-aprobado';
+            return;
+        }
+
+        // Calculamos el umbral dinámicamente
+        // 1 hora = 3600 segundos. Tiempo de fabricación del lingote = 2 segundos.
+        const umbral = (oroPorHora / 3600) * 2;
+        const gananciaNeta = precioLingote - (precioMena * 2);
+
+        if (gananciaNeta > umbral) {
+            resultadoDiv.textContent = `Aprobado ✅ (Ganancia crafteo: ${gananciaNeta.toFixed(2)})`;
+            resultadoDiv.className = 'aprobado';
+        } else {
+            resultadoDiv.textContent = `No Aprobado ❌ (Ganancia crafteo: ${gananciaNeta.toFixed(2)})`;
+            resultadoDiv.className = 'no-aprobado';
+        }
+    });
+</script>
+
+</body>
+</html>
