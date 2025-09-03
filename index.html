@@ -96,11 +96,11 @@
     <h1>Calculadora de Rentabilidad</h1>
     <form id="calculadoraForm">
         <div class="form-group">
-            <label for="oroPorHora">Oro que consigues por hora (Farmeando):</label>
+            <label for="oroPorHora">Oro que consigues por hora (minando):</label>
             <input type="number" id="oroPorHora" step="0.01" required>
         </div>
         <div class="form-group">
-            <label for="precioLingote">Precio de la Barra:</label>
+            <label for="precioLingote">Precio del Lingote:</label>
             <input type="number" id="precioLingote" step="0.01" required>
         </div>
         <div class="form-group">
@@ -129,7 +129,7 @@
             return;
         }
 
-        const tiempoFabricacion = 2; // En segundos
+        const tiempoFabricacion = 1.5; // En segundos, modificado a 1.5
         const segundosPorHora = 3600;
 
         // Calculamos la ganancia por la fabricación de un solo lingote
